@@ -6,9 +6,9 @@ namespace WeatherConsole.Application
 {
     public class CommandParser
     {
-        public static IEnumerable<Command> ParseCommands(List<string> args)
+        public static IEnumerable<Command> ParseCommands(string args)
         {
-
+            if(args.Contains("--city"))
         }
     }
 }
