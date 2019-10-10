@@ -13,16 +13,16 @@ namespace WeatherConsole.Application
                 if (args.StartsWith("--city"))
                     command = "--city";
 
-                if(args.StartsWith("-c") && !args.StartsWith("-city"))
+                else if(args.StartsWith("-c") && !args.StartsWith("-city"))
                     command = "-c";
 
-                args.Remove(0, command.Length);
+                args = args.Remove(0, command.Length);
             }
 
-            if (args.Contains("--city"))
+            if (command == "--city" || command == "-c")
             {
                 var commandValues = args.Split(',').ToList();
-                var commands = commandValues.Select(i => new CityCommand(i));
+                var commands = commandValues.Select(i => new CityCommand(i.Trim()));
                 return commands;
             }
 
