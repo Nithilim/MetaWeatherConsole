@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using WeatherConsole.Core.Commands;
 
 namespace WeatherConsole.Application
 {
@@ -42,7 +43,7 @@ namespace WeatherConsole.Application
             else
                 command = args[0];
 
-            return CommandParser.ParseCommand(command);
+            return ArgsParser.ParseCommand(command);
         }
     }
 }

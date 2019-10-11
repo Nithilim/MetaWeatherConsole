@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WeatherConsole.Core.Commands;
 
 namespace WeatherConsole.Application
 {
-    public class CommandParser
+    public class ArgsParser
     {
         public static IEnumerable<Command> ParseCommand(string args)
         {

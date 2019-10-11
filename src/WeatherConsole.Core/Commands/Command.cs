@@ -1,4 +1,4 @@
-﻿namespace WeatherConsole.Application
+﻿namespace WeatherConsole.Core.Commands
 {
     public class Command
     {
