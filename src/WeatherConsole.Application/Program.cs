@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using WeatherConsole.Core.Commands;
+using WeatherConsole.Infrastructure;
 
 namespace WeatherConsole.Application
 {
@@ -9,6 +10,8 @@ namespace WeatherConsole.Application
     {
         static void Main(string[] args)
         {
+            var startup = new StartupStrategy();
+            startup.Initialize();
             bool exit = false; 
             while(!exit)
             {
