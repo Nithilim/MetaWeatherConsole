@@ -9,4 +9,13 @@
     <OutputPath>..\bin\Debug\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WeatherConsole.Core\WeatherConsole.Core.csproj" />
+    <ProjectReference Include="..\WeatherConsole.Infrastructure\WeatherConsole.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
