@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using WeatherConsole.Core.Contracts;
@@ -28,7 +26,7 @@ namespace WeatherConsole.Infrastructure.Api
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (_token != null)
-                request.Headers.Authorization = new AuthenticationHeaderValue($"bearer {_token.Token}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token.Token);
             else
             {
                 _token = await _tokenClient.Authorize("meta", "site");
@@ -39,7 +37,7 @@ namespace WeatherConsole.Infrastructure.Api
             if(response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 _token = await _tokenClient.Authorize("meta", "site");
-                request.Headers.Authorization = new AuthenticationHeaderValue($"{_token.Token}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token.Token);
                 response = await base.SendAsync(request, cancellationToken);
             }
 
