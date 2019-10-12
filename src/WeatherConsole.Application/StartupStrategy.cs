@@ -11,7 +11,7 @@ namespace WeatherConsole.Application
         public async void Initialize()
         {
             var client = new ApiClient("https://metasite-weather-api.herokuapp.com/");
-            string list = await client.GetCities();
+            var test = await client.GetCityWeather("Vilnius");
         }
     }
 }
