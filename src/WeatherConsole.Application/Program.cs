@@ -12,7 +12,7 @@ namespace WeatherConsole.Application
             using(var scope = container.BeginLifetimeScope())
             {
                 var weatherConsole = scope.Resolve<WeatherConsoleDisplay>();
-                weatherConsole.InitializeConsole(args);
+                weatherConsole.InitializeConsole(args).GetAwaiter().GetResult();
             }
         }
     }

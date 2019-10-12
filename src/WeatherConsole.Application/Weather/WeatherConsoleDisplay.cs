@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WeatherConsole.Core.Commands;
 
 namespace WeatherConsole.Application.Weather
@@ -16,12 +17,14 @@ namespace WeatherConsole.Application.Weather
             _cityWeather = cityWeather;
         }
 
-        public void InitializeConsole(string[] args)
+        public async Task InitializeConsole(string[] args)
         {
             bool exit = false;
             while (!exit)
             {
-                PrepareCommands(args);
+                var commands = await PrepareCommands(args);
+                foreach (var command in commands)
+                    await _cityWeather.DisplayWeather(command.Value);
 
                 bool validChoice = false;
                 Console.WriteLine("Run again? (y/n)");
@@ -41,12 +44,13 @@ namespace WeatherConsole.Application.Weather
             }
         }
 
-        private IEnumerable<Command> PrepareCommands(string[] args)
+        private async Task<IEnumerable<Command>> PrepareCommands(string[] args)
         {
             string command = "";
             if (!args.Any())
             {
-                Console.WriteLine("Please enter command: ");
+                await _cities.DisplayCities();
+                Console.WriteLine("Please enter command \"--city City Name\" or \"-c City Name\" : ");
                 command = Console.ReadLine();
             }
             else
