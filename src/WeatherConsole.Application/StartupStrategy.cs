@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WeatherConsole.Infrastructure;
+using WeatherConsole.Infrastructure.Api;
 
 namespace WeatherConsole.Application
 {
@@ -10,7 +11,7 @@ namespace WeatherConsole.Application
         public async void Initialize()
         {
             var client = new ApiClient("https://metasite-weather-api.herokuapp.com/");
-            await client.Authorize("meta", "site");
+            string list = await client.GetCities();
         }
     }
 }

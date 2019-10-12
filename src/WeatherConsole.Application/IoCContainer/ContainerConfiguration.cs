@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using WeatherConsole.Infrastructure;
+using WeatherConsole.Infrastructure.Api;
 
 namespace WeatherConsole.Application.IoCContainer
 {
