@@ -52,6 +52,13 @@ namespace WeatherConsole.Application.Weather
                 await _cities.DisplayCities();
                 Console.WriteLine("Please enter command \"--city City Name\" or \"-c City Name\" : ");
                 command = Console.ReadLine();
+                bool validComand = ArgsParser.IsCommandValid(command);
+                while (!validComand)
+                {
+                    Console.WriteLine("Wrong entry! Try again: ");
+                    command = Console.ReadLine();
+                    validComand = ArgsParser.IsCommandValid(command);
+                } 
             }
             else
                 command = args[0];

@@ -17,10 +17,17 @@ namespace WeatherConsole.Application.Weather
         {
             Console.WriteLine("Sending request...");
             var weatherStats = await _apiClient.GetCityWeather(selectedCity);
-            Console.WriteLine($"Displaying weather statistics of {selectedCity}: ");
-            Console.WriteLine($"    Weather status is {weatherStats.Weather}\r\n" +
-                $"    Temperature is {weatherStats.Temperature}\r\n" +
-                $"    Precipitation is {weatherStats.Precipitation}\r\n");
+            if(weatherStats != null)
+            {
+                Console.WriteLine($"Displaying weather statistics of {selectedCity}: ");
+                Console.WriteLine($"    Weather status is {weatherStats.Weather}\r\n" +
+                    $"    Temperature is {weatherStats.Temperature}\r\n" +
+                    $"    Precipitation is {weatherStats.Precipitation}\r\n");
+            }
+            else
+            {
+                Console.WriteLine("No weather data received. Please make sure that you enter city that is available.");
+            }
         }
     }
 }

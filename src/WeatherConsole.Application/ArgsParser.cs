@@ -29,5 +29,16 @@ namespace WeatherConsole.Application
 
             return new List<Command>();
         }
+
+        public static bool IsCommandValid(string command)
+        {
+            if (command.StartsWith("--city"))
+                return true;
+
+            else if (command.StartsWith("-c") && !command.StartsWith("-city"))
+                return true;
+
+            return false;
+        }
     }
 }
