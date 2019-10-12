@@ -17,13 +17,19 @@ namespace WeatherConsole.Application.Weather
 
         public async Task DisplayCities()
         {
+            Console.WriteLine("Loading...");
             string cities = await _apiClient.GetCities();
-            Console.WriteLine($"");
+            Console.WriteLine($"Available Cities: {FormatCities(cities)} \r\n");
         }
 
-        private string[] FormatCities(string cities)
+        private string FormatCities(string cities)
         {
-            return cities.Trim().Split();
+            var charsToRemove = new string[] { "[", "]", "\"" };
+            foreach (var c in charsToRemove)
+            {
+                cities = cities.Replace(c, string.Empty);
+            }
+            return cities;
         }
     }
 }
