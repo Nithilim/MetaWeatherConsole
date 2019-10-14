@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WeatherConsole.Core.Commands;
+using WeatherConsole.Core.Weather;
 
 namespace WeatherConsole.Application
 {
@@ -23,7 +23,7 @@ namespace WeatherConsole.Application
             if (command == "--city" || command == "-c")
             {
                 var commandValues = args.Split(',').ToList();
-                var commands = commandValues.Select(i => new CityCommand(i.Trim()));
+                var commands = commandValues.Select(i => new Command(command ,i.Trim()));
                 return commands;
             }
 

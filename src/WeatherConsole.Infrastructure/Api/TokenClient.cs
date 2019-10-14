@@ -17,21 +17,21 @@ namespace WeatherConsole.Infrastructure.Api
             _client = client;
         }
 
-        public async Task<ApiToken> Authorize(string username, string password, CancellationToken cancellationToken = default)
+        public async Task<ApiToken> Authorize(CancellationToken cancellationToken = default)
         {
             var response = await _client.PostAsync("/api/authorize", new JsonContent(new Dictionary<string, string>
             {
-                { "username", username },
-                {"password", password }
+                { "username", "meta" },
+                {"password", "site" }
             }), cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                throw new ApiException("Response status was not successful");
+                throw new ApiException("API request was not successful");
 
             string stream = await response.Content.ReadAsStringAsync();
             var token = JsonConvert.DeserializeObject<ApiToken>(stream);
             if (token == null || string.IsNullOrEmpty(token.Token))
-                throw new ApiException("Response content is empty");
+                throw new ApiException("API Response content is empty");
 
             return token;
         }

@@ -2,29 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WeatherConsole.Core.Commands;
+using WeatherConsole.Core.Weather;
+using WeatherConsole.Infrastructure.Api;
+using WeatherConsole.Infrastructure.Exceptions;
 
 namespace WeatherConsole.Application.Weather
 {
     public class WeatherConsoleDisplay
     {
-        private readonly AvailableCities _cities;
-        private readonly CityWeather _cityWeather;
-
-        public WeatherConsoleDisplay(AvailableCities cities, CityWeather cityWeather)
+        private readonly ApiClient _apiClient;
+        public WeatherConsoleDisplay(ApiClient apiClient)
         {
-            _cities = cities;
-            _cityWeather = cityWeather;
+            _apiClient = apiClient;
         }
 
-        public async Task InitializeConsole(string[] args)
+        public async Task Run(string[] args)
         {
             bool exit = false;
             while (!exit)
             {
-                var commands = await PrepareCommands(args);
-                foreach (var command in commands)
-                    await _cityWeather.DisplayWeather(command.Value);
+                try
+                {
+                    await ShowCities();
+                    await ShowCityWeathers(args);
+                }
+                catch (ApiException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
 
                 bool validChoice = false;
                 Console.WriteLine("Run again? (y/n)");
@@ -33,6 +38,7 @@ namespace WeatherConsole.Application.Weather
                     string userChoice = Console.ReadLine();
                     if (userChoice == "y" || userChoice == "Y")
                         validChoice = true;
+
                     else if (userChoice == "n" || userChoice == "N")
                     {
                         validChoice = true;
@@ -44,12 +50,38 @@ namespace WeatherConsole.Application.Weather
             }
         }
 
-        private async Task<IEnumerable<Command>> PrepareCommands(string[] args)
+        private async Task ShowCities()
+        {
+            Console.WriteLine("Checking available cities...");
+            string availableCities = await _apiClient.GetCities();
+            Console.WriteLine($"Available Cities: {FormatCities(availableCities)} \r\n");
+        }
+
+        private string FormatCities(string cities)
+        {
+            var charsToRemove = new string[] { "[", "]", "\"" };
+            foreach (var c in charsToRemove)
+                cities = cities.Replace(c, string.Empty);
+
+            return cities;
+        }
+
+        private async Task ShowCityWeathers(string[] args)
+        {
+            var commands = ReadCommands(args);
+            foreach (var command in commands)
+            {
+                var weather = await _apiClient.GetCityWeather(command.Value);
+                var city = new City(command.Value, weather);
+                city.DisplayWeather();
+            }
+        }
+
+        private IEnumerable<Command> ReadCommands(string[] args)
         {
             string command = "";
             if (!args.Any())
             {
-                await _cities.DisplayCities();
                 Console.WriteLine("Please enter command \"--city City Name\" or \"-c City Name\" : ");
                 command = Console.ReadLine();
                 bool validComand = ArgsParser.IsCommandValid(command);
@@ -58,7 +90,7 @@ namespace WeatherConsole.Application.Weather
                     Console.WriteLine("Wrong entry! Try again: ");
                     command = Console.ReadLine();
                     validComand = ArgsParser.IsCommandValid(command);
-                } 
+                }
             }
             else
                 command = args[0];
