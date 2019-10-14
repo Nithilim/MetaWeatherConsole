@@ -19,9 +19,9 @@ namespace WeatherConsole.Application.Weather
         public void DisplayWeather()
         {
             Console.WriteLine($"Displaying weather statistics of {Name}: ");
-            Console.WriteLine($"    Weather status is {_weather.Weather}\r\n" +
-                $"    Temperature is {_weather.Temperature}\r\n" +
-                $"    Precipitation is {_weather.Precipitation}\r\n");
+            Console.WriteLine($"    Weather status: {_weather.Weather}\r\n" +
+                $"    Temperature: {_weather.Temperature}\r\n" +
+                $"    Precipitation: {_weather.Precipitation}\r\n");
         }
     }
 }

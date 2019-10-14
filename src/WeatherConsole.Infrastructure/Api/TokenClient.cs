@@ -26,12 +26,12 @@ namespace WeatherConsole.Infrastructure.Api
             }), cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                throw new ApiException("Response status was not successful");
+                throw new ApiException("API request was not successful");
 
             string stream = await response.Content.ReadAsStringAsync();
             var token = JsonConvert.DeserializeObject<ApiToken>(stream);
             if (token == null || string.IsNullOrEmpty(token.Token))
-                throw new ApiException("Response content is empty");
+                throw new ApiException("API Response content is empty");
 
             return token;
         }

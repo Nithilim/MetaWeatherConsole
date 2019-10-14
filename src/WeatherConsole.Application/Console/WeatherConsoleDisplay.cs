@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WeatherConsole.Core.Weather;
 using WeatherConsole.Infrastructure.Api;
+using WeatherConsole.Infrastructure.Exceptions;
 
 namespace WeatherConsole.Application.Weather
 {
@@ -29,6 +30,7 @@ namespace WeatherConsole.Application.Weather
                     string userChoice = Console.ReadLine();
                     if (userChoice == "y" || userChoice == "Y")
                         validChoice = true;
+
                     else if (userChoice == "n" || userChoice == "N")
                     {
                         validChoice = true;
@@ -42,20 +44,34 @@ namespace WeatherConsole.Application.Weather
 
         private async Task PrepareCityWeathers(IEnumerable<Command> commands)
         {
-            foreach(var command in commands)
+            try
             {
-                var weather = await _apiClient.GetCityWeather(command.Value);
-                var city = new City(command.Value, weather);
-                city.DisplayWeather();
+                foreach (var command in commands)
+                {
+                    var weather = await _apiClient.GetCityWeather(command.Value);
+                    var city = new City(command.Value, weather);
+                    city.DisplayWeather();
+                }
+            }
+            catch (ApiException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
         private async Task ShowGuidelines()
         {
-            Console.WriteLine("Checking available cities...");
-            string availableCities = await _apiClient.GetCities();
-            Console.WriteLine($"Available Cities: {FormatCities(availableCities)} \r\n");
-            Console.WriteLine("Please enter command \"--city City Name\" or \"-c City Name\" : ");
+            try
+            {
+                Console.WriteLine("Checking available cities...");
+                string availableCities = await _apiClient.GetCities();
+                Console.WriteLine($"Available Cities: {FormatCities(availableCities)} \r\n");
+                Console.WriteLine("Please enter command \"--city City Name\" or \"-c City Name\" : ");
+            }
+            catch (ApiException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private IEnumerable<Command> PrepareCommands(string[] args)
@@ -70,7 +86,7 @@ namespace WeatherConsole.Application.Weather
                     Console.WriteLine("Wrong entry! Try again: ");
                     command = Console.ReadLine();
                     validComand = ArgsParser.IsCommandValid(command);
-                } 
+                }
             }
             else
                 command = args[0];
@@ -82,9 +98,8 @@ namespace WeatherConsole.Application.Weather
         {
             var charsToRemove = new string[] { "[", "]", "\"" };
             foreach (var c in charsToRemove)
-            {
                 cities = cities.Replace(c, string.Empty);
-            }
+
             return cities;
         }
     }
