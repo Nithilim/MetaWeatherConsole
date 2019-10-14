@@ -11,8 +11,6 @@ namespace WeatherConsole.Application.IoCContainer
             var builder = new ContainerBuilder();
 
             builder.Register(c => new ApiClient("https://metasite-weather-api.herokuapp.com/"));
-            builder.RegisterType<AvailableCities>();
-            builder.RegisterType<CityWeather>();
             builder.RegisterType<WeatherConsoleDisplay>();
 
             return builder.Build();
