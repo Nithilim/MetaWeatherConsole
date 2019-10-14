@@ -11,7 +11,6 @@ namespace WeatherConsole.Infrastructure.Api
     public class TokenHandler : DelegatingHandler
     {
         public readonly TokenClient _tokenClient;
-
         private ApiToken _token;
 
         public TokenHandler(string baseUrl)
@@ -25,23 +24,22 @@ namespace WeatherConsole.Infrastructure.Api
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (_token != null)
-                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token.Token);
-            else
-            {
-                _token = await _tokenClient.Authorize("meta", "site");
-                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token.Token);
-            }
+            if (_token == null)
+                _token = await _tokenClient.Authorize();
 
+            SetAuthHeader(request);
             var response = await base.SendAsync(request, cancellationToken);
             if(response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _token = await _tokenClient.Authorize("meta", "site");
-                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token.Token);
+                _token = await _tokenClient.Authorize();
+                SetAuthHeader(request);
                 response = await base.SendAsync(request, cancellationToken);
             }
 
             return response;
         }
+
+        private void SetAuthHeader(HttpRequestMessage request) 
+            => request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token.Token);
     }
 }

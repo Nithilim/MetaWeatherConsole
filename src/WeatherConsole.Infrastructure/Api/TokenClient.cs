@@ -17,12 +17,12 @@ namespace WeatherConsole.Infrastructure.Api
             _client = client;
         }
 
-        public async Task<ApiToken> Authorize(string username, string password, CancellationToken cancellationToken = default)
+        public async Task<ApiToken> Authorize(CancellationToken cancellationToken = default)
         {
             var response = await _client.PostAsync("/api/authorize", new JsonContent(new Dictionary<string, string>
             {
-                { "username", username },
-                {"password", password }
+                { "username", "meta" },
+                {"password", "site" }
             }), cancellationToken);
 
             if (!response.IsSuccessStatusCode)
