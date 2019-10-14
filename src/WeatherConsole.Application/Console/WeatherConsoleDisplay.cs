@@ -21,7 +21,7 @@ namespace WeatherConsole.Application.Weather
             while (!exit)
             {
                 await ShowGuidelines();
-                var cities = await PrepareCityWeathers(PrepareCommands(args));  
+                await PrepareCityWeathers(PrepareCommands(args));
                 bool validChoice = false;
                 Console.WriteLine("Run again? (y/n)");
                 while (!validChoice)
@@ -40,16 +40,14 @@ namespace WeatherConsole.Application.Weather
             }
         }
 
-        private async Task<IEnumerable<ICity>> PrepareCityWeathers(IEnumerable<Command> commands)
+        private async Task PrepareCityWeathers(IEnumerable<Command> commands)
         {
-            var cities = new List<City>();
             foreach(var command in commands)
             {
                 var weather = await _apiClient.GetCityWeather(command.Value);
-                cities.Add(new City(command.Value, weather));
+                var city = new City(command.Value, weather);
+                city.DisplayWeather();
             }
-
-            return cities;
         }
 
         private async Task ShowGuidelines()
