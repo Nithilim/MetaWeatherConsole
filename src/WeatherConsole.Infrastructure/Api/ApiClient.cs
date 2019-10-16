@@ -28,14 +28,14 @@ namespace WeatherConsole.Infrastructure.Api
             return cities;
         }
 
-        public async Task<CityWeather> GetCityWeather(string cityName)
+        public async Task<WeatherStatistics> GetCityWeather(string cityName)
         {
             var response = await _client.GetAsync($"/api/Weather/{cityName}");
             if (!response.IsSuccessStatusCode)
                 throw new ApiException("API request was not successful!");
 
             string stream = await response.Content.ReadAsStringAsync();
-            var cityWeather = JsonConvert.DeserializeObject<CityWeather>(stream);
+            var cityWeather = JsonConvert.DeserializeObject<WeatherStatistics>(stream);
             EnsureContentReturned(cityWeather?.CityName);
             return cityWeather;
         }

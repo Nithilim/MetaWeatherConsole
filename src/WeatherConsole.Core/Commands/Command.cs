@@ -1,12 +1,12 @@
-﻿namespace WeatherConsole.Core.Weather
+﻿namespace WeatherConsole.Core.Commands
 {
     public class Command
     {
-        public string Type { get; set; }
+        public CommandType Type { get; set; }
 
         public string Value { get; }
 
-        public Command(string type, string value)
+        public Command(CommandType type, string value)
         {
             Type = type;
             Value = value;
