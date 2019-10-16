@@ -9,7 +9,10 @@ namespace WeatherConsole.Application.CommandParsers
     {
         public IEnumerable<Command> ParseCommand(string args)
         {
-            if(IsArgsValid(args))
+            if (args.StartsWith("weather") || args.StartsWith("Weather"))
+                args = args.Remove(0, "weather".Length + 1);
+
+            if (IsArgsValid(args))
             {
                 var commandEndIndex = args.IndexOf(" ");
                 if (commandEndIndex > 0)
