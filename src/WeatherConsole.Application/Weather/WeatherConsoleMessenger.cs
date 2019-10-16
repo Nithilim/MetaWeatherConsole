@@ -7,8 +7,8 @@ namespace WeatherConsole.Application.Weather
     {
         public void ShowGuidelines()
         {
-            Console.WriteLine("Command example: \"--city City Name1\" or \"-c City Name\"");
-            Console.WriteLine("You can chain multiple cities: \"--city City Name1, City Name2\"");
+            Console.WriteLine("Command example: \"weather --city City Name1\" or \"weather -c City Name\"");
+            Console.WriteLine("You can chain multiple cities: \"weather --city City Name1, City Name2\"");
         }
 
         public void ShowMessage(string message)
