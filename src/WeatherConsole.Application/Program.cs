@@ -11,7 +11,7 @@ namespace WeatherConsole.Application
             var container = ContainerConfiguration.ConfigureContainer();
             using(var scope = container.BeginLifetimeScope())
             {
-                var weatherConsole = scope.Resolve<WeatherConsoleDisplay>();
+                var weatherConsole = scope.Resolve<TerritoryWeatherConsole>();
                 weatherConsole.Run(args).GetAwaiter().GetResult();
             }
         }

@@ -2,7 +2,7 @@
 
 namespace WeatherConsole.Core.Contracts
 {
-    public class CityWeather
+    public class WeatherStatistics
     {
         [JsonProperty("city")]
         public string CityName { get; set; }
