@@ -9,20 +9,23 @@ namespace WeatherConsole.Application.CommandParsers
     {
         public IEnumerable<Command> ParseCommand(string args)
         {
-            if (args.StartsWith("weather") || args.StartsWith("Weather"))
-                args = args.Remove(0, "weather".Length + 1);
-
             if (IsArgsValid(args))
             {
+                if (args.StartsWith("weather") || args.StartsWith("Weather"))
+                    args = args.Remove(0, "weather".Length + 1);
+
                 var commandEndIndex = args.IndexOf(" ");
                 if (commandEndIndex > 0)
                 {
                     var command = args.Substring(0, args.IndexOf(" "));
                     if (command == "-c" || command == "--city")
                     {
-                        string values = args.Remove(0, command.Length);
-                        var splitValues = values.Split(',');
-                        return splitValues.Select(v => new Command(CommandType.City, v.Trim()));
+                        string values = args.Remove(0, command.Length).Trim();
+                        if (IsArgsValid(values))
+                        {
+                            var splitValues = values.Split(',');
+                            return splitValues.Select(v => new Command(CommandType.City, v));
+                        }
                     }
                 }
             }
@@ -37,7 +40,7 @@ namespace WeatherConsole.Application.CommandParsers
 
         private bool IsArgsValid(string args)
         {
-            if (args == null || string.IsNullOrEmpty(args))
+            if (string.IsNullOrEmpty(args))
                 return false;
 
             return true;
