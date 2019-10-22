@@ -5,7 +5,7 @@ using WeatherConsole.Core.Commands;
 
 namespace WeatherConsole.Application.Test
 {
-    public class UnitTest1
+    public class CommandParserTest
     {
         [Fact]
         public void UsingCorrectArgsSucceeds()
